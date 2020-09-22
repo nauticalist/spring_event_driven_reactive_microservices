@@ -1,0 +1,3 @@
+include ':sharedkernel'
+include ':microservices:port-service'
+include ':microservices:port-edgeservice'
