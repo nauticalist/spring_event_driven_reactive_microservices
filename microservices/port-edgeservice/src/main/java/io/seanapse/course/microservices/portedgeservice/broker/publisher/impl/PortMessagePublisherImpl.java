@@ -25,5 +25,6 @@ public class PortMessagePublisherImpl implements PortMessagePublisher {
     public void publishCreatePortMessage(CreatePortMessage message) {
         sources.outputPortsCreate()
                 .send(MessageBuilder.withPayload(new Event(message.getPortId(), message)).build());
+        LOG.info("[PORT-EDGESERVICE] [BROKER] Create port message published: {}", message.toString());
     }
 }
