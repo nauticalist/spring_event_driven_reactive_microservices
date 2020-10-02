@@ -15,7 +15,7 @@ plugins {
 	id 'java'
 }
 
-group = 'io.seanapse.course.microservices'
+group = 'io.seanapse.course'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -30,6 +30,7 @@ ext {
 dependencies {
 	// web
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'javax.validation:validation-api:2.0.1.Final'
 	// Shared libraries other than spring
 	implementation "org.apache.commons:commons-lang3:${apacheCommonsLangVersion}"
 	// tests

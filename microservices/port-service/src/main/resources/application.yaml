@@ -1,0 +1,104 @@
+server:
+  port: 7001
+
+logging:
+  level:
+    root: INFO
+    io.seanapse.course: DEBUG
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+  pattern:
+    console: "[Ports] %clr(%d{HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(---){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  main:
+    banner-mode: OFF
+  devtools:
+    restart:
+      additional-paths:
+        - conf/**
+  data:
+    mongodb:
+      uri: mongodb://root:rootpassword@localhost:27017/?authSource=admin&authMechanism=SCRAM-SHA-1
+      database: resources
+
+spring.cloud.stream:
+  defaultBinder: kafka
+  default.contentType: application/json
+  bindings:
+    input-ports-create:
+      destination: seanapse.course.ports.create
+      group: portsGroup
+    input-ports-update:
+      destination: seanapse.course.ports.update
+      group: portsGroup
+    input-ports-delete:
+      destination: seanapse.course.ports.delete
+      group: portsGroup
+    output-ports-created:
+      destination: seanapse.course.ports.created
+      producer:
+        required-groups: auditGroup
+    output-ports-deleted:
+      destination: seanapse.course.ports.deleted
+      producer:
+        required-groups: auditGroup
+    output-ports-updated:
+      destination: seanapse.course.ports.updated
+      producer:
+        required-groups: auditGroup
+
+spring.cloud.stream.bindings.input.consumer:
+  maxAttempts: 3
+  backOffInitialInterval: 500
+  backOffMaxInterval: 1000
+  backOffMultiplier: 2.0
+
+spring.cloud.stream.kafka.bindings.input.consumer:
+  enableDlq: true
+
+spring.cloud.stream.kafka.binder:
+  brokers: 127.0.0.1
+  defaultBrokerPort: 9092
+
+---
+spring:
+  profiles: container
+  data:
+    mongodb:
+      uri: mongodb://root:rootpassword@mongodb:27017/?authSource=admin&authMechanism=SCRAM-SHA-1
+      database: resources
+
+spring.cloud.stream.kafka.binder:
+  brokers: kafka
+  defaultBrokerPort: 9092
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  health:
+    binders:
+      enabled: true
+    probes:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+      group:
+        readiness:
+          include: readinessState,db
+        liveness:
+          include: livenessState,ping,diskSpac

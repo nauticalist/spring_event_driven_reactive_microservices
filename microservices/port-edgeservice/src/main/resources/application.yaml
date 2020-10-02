@@ -1,0 +1,95 @@
+logging:
+  level:
+    root: INFO
+    io.seanapse.jms: DEBUG
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+  pattern:
+    console: "[Port Edge Service] %clr(%d{HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(---){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+
+server:
+  port: 7000
+
+app:
+  port-service:
+    host: localhost
+    port: 7001
+
+spring:
+  main:
+    banner-mode: OFF
+  devtools:
+    restart:
+      additional-paths:
+        - conf/**
+  cloud:
+    stream:
+      bindings:
+        output:
+          binder: kafka
+          destination: resources
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+spring.cloud.stream:
+  defaultBinder: kafka
+  default.contentType: application/json
+  binder:
+    brokers: 127.0.0.1
+    defaultBrokerPort: 9092
+  bindings:
+    output-ports-create:
+      destination: seanapse.course.ports.create
+      producer:
+        required-groups: auditGroup
+    output-ports-update:
+      destination: seanapse.course.ports.update
+      producer:
+        required-groups: auditGroup
+    output-ports-delete:
+      destination: seanapse.course.ports.delete
+      producer:
+        required-groups: auditGroup
+
+---
+spring:
+  profiles: container
+
+server:
+  port: 8080
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  health:
+    binders:
+      enabled: true
+    probes:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+      group:
+        readiness:
+          include: readinessState,binders
+        liveness:
+          include: livenessState,ping,diskSpac
+
+app:
+  port-service:
+    host: port-service
+    port: 8080
+
+spring.cloud.stream.kafka.binder:
+  brokers: kafka
+  defaultBrokerPort: 9092
