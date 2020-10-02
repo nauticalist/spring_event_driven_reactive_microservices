@@ -31,6 +31,9 @@ public class Port {
 
     private double[] location;
 
+    public Port() {
+    }
+
     @PersistenceConstructor
     Port(String portId, String portName, String country, String unLoCode, double[] location) {
         super();

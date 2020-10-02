@@ -10,7 +10,8 @@ public interface PortEventMapper {
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
-            @Mapping(target = "version", ignore = true)
+            @Mapping(target = "version", ignore = true),
+            @Mapping(target = "location", ignore = true)
     })
     Port mapCreatePortMessageToPort(CreatePortMessage createPortMessage);
 
