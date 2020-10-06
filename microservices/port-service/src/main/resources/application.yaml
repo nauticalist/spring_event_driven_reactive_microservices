@@ -78,11 +78,11 @@ spring:
       database: resources
 
 spring.cloud.stream.kafka.binder:
-  brokers: kafka
+  brokers: kafka-service
   defaultBrokerPort: 9092
 
 server:
-  port: 8080
+  port: 80
 
 management:
   endpoints:

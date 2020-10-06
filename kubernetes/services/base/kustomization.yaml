@@ -1,0 +1,3 @@
+resources:
+  - port-edgeservice.yaml
+  - port.yaml

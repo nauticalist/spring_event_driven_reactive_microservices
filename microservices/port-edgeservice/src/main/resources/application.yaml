@@ -63,7 +63,7 @@ spring:
   profiles: container
 
 server:
-  port: 8080
+  port: 80
 
 
 management:
@@ -91,5 +91,5 @@ app:
     port: 8080
 
 spring.cloud.stream.kafka.binder:
-  brokers: kafka
+  brokers: kafka-service
   defaultBrokerPort: 9092

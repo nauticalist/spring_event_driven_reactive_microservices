@@ -1,0 +1,8 @@
+bases:
+  - ../../base
+resources:
+  - zk-deployment-dev.yaml
+  - zk-service-dev.yaml
+  - mongodb-dev.yaml
+  - kafka-deployment-dev.yaml
+  - kafka-service.yaml
