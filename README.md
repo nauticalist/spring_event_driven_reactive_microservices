@@ -11,3 +11,6 @@ Topics covered in my course:
 
 Recommended Reads:
 https://www.infoq.com/articles/event-driven-finding-seams/
+
+
+This is my own implementation. If you have any questions or recommendations, feel free to contact me.
